@@ -29,7 +29,7 @@ namespace DirectorySearcherLib
 
             try
             {
-                AuthenticationContext authContext = new AuthenticationContext(commonAuthority);
+                AuthenticationContext authContext = new AuthenticationContext(authority);
                 authResult = await authContext.AcquireTokenAsync(graphResourceUri, clientId, returnUri, parent);
             }
             catch (Exception ee)
