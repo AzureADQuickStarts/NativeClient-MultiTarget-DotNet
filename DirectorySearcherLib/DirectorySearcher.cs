@@ -14,11 +14,12 @@ namespace DirectorySearcherLib
 {
     public static class DirectorySearcher
     {
-        public static string clientId = "a5d92493-ae5a-4a9f-bcbf-9f1d354067d3";
-        public static string commonAuthority = "https://login.windows.net/common";
-        public static Uri returnUri = new Uri("http://MyDirectorySearcherApp");        
+        public static string clientId = "[Enter client ID as obtained from Azure Portal, e.g. 82692da5-a86f-44c9-9d53-2f88d52b478b]";
+        public static string tenant = "[Enter tenant name, e.g. contoso.onmicrosoft.com]";
+        public static string authority = String.Format("https://login.microsoftonline.com/{0}", tenant);
+        public static Uri returnUri = new Uri("[Enter redirectUri name, e.g. http://DirectorySearcher]");
         const string graphResourceUri = "https://graph.windows.net";
-        public static string graphApiVersion = "2013-11-08";
+        public static string graphApiVersion = "1.5";
 
         public static async Task<List<User>> SearchByAlias(string alias, IPlatformParameters parent) // add this param
         {
@@ -28,12 +29,7 @@ namespace DirectorySearcherLib
 
             try
             {
-                // To avoid the user consent page, input the values for your registered application above,
-                // comment out the if statement immediately below, and replace the commonAuthority parameter
-                // with https://login.windows.net/<your.tenant.domain.com>
                 AuthenticationContext authContext = new AuthenticationContext(commonAuthority);
-                if (authContext.TokenCache.ReadItems().Count() > 0)
-                    authContext = new AuthenticationContext(authContext.TokenCache.ReadItems().First().Authority);
                 authResult = await authContext.AcquireTokenAsync(graphResourceUri, clientId, returnUri, parent);
             }
             catch (Exception ee)
