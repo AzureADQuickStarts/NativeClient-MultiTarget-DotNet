@@ -1,10 +1,9 @@
-﻿using DirectorySearcherLib;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using DirectorySearcherLib;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -14,8 +13,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Popups;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace DirSearchClient_Universal
 {
@@ -52,7 +53,32 @@ namespace DirSearchClient_Universal
 
         private async void Search(object sender, RoutedEventArgs e)
         {
-            await UnivDirectoryHelper.Search(sender, e, SearchResults, SearchTermText, StatusResult, new PlatformParameters());
+            if (string.IsNullOrEmpty(SearchTermText.Text))
+            {
+                MessageDialog dialog = new MessageDialog("Please enter a valid search term.");
+                await dialog.ShowAsync();
+                return;
+            }
+
+            List<User> results = await DirectorySearcherLib.DirectorySearcher.SearchByAlias(SearchTermText.Text, new PlatformParameters(PromptBehavior.Auto, false));
+            if (results.Count == 0)
+            {
+                StatusResult.Text = "User Not Found. Try Another Term.";
+                StatusResult.Foreground = new SolidColorBrush(Windows.UI.Colors.White);
+                results.Add(new User());
+            }
+            else if (results[0].error != null)
+            {
+                StatusResult.Text = "Error! " + results[0].error;
+                StatusResult.Foreground = new SolidColorBrush(Windows.UI.Colors.Red);
+            }
+            else
+            {
+                StatusResult.Text = "Success";
+                StatusResult.Foreground = new SolidColorBrush(Windows.UI.Colors.Green);
+            }
+
+            SearchResults.ItemsSource = results;
         }
     }
 }

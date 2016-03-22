@@ -14,10 +14,10 @@ namespace DirectorySearcherLib
 {
     public static class DirectorySearcher
     {
-        public static string clientId = "[Enter client ID as obtained from Azure Portal, e.g. 82692da5-a86f-44c9-9d53-2f88d52b478b]";
-        public static string tenant = "[Enter tenant name, e.g. contoso.onmicrosoft.com]";
+        public static string clientId = "7de803e2-8e32-4e7a-8335-b77ae40297f0";
+        public static string tenant = "strockisdev.onmicrosoft.com";
         public static string authority = String.Format("https://login.microsoftonline.com/{0}", tenant);
-        public static Uri returnUri = new Uri("[Enter redirectUri name, e.g. http://DirectorySearcher]");
+        public static Uri returnUri = new Uri("http://TodoListClient");
         const string graphResourceUri = "https://graph.windows.net";
         public static string graphApiVersion = "1.5";
 
