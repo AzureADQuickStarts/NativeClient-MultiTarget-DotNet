@@ -15,12 +15,7 @@ namespace DirSearchClient_Android
     [Activity(Label = "DirSearchClient_Android", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-            AuthenticationAgentContinuationHelper.SetAuthenticationAgentContinuationEventArgs(requestCode, resultCode, data);
-        }
-        
+        // TODO: Override the OnActivityResult
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -53,7 +48,8 @@ namespace DirSearchClient_Android
                     return;
                 }
 
-                List<User> results = await DirectorySearcher.SearchByAlias(searchTermText.Text, new PlatformParameters(this));
+                // TODO: Call the SearchByAlias method
+
                 if (results.Count == 0)
                 {
                     statusResult.SetText(Resource.String.UserNotFound);

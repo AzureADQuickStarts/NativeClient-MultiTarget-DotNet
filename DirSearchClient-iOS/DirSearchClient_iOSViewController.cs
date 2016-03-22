@@ -43,7 +43,8 @@ namespace DirSearchClient_iOS
                     return;
                 }
 
-                List<User> results = await DirectorySearcher.SearchByAlias(SearchTermText.Text, new PlatformParameters(this));
+                // TODO: Call the SearchByAlias method
+
                 if (results.Count == 0) 
                 {
                     StatusResult.Text = "User Not Found";

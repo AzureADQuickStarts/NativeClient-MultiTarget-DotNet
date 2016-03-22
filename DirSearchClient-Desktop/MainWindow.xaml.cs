@@ -38,7 +38,8 @@ namespace DirSearchClient_Desktop
                 return;
             }
 
-            List<User> results = await DirectorySearcher.SearchByAlias(SearchTermText.Text, new PlatformParameters(PromptBehavior.Auto, this.Handle));
+            // TODO: Call the SearchByAlias method
+
             if (results.Count == 0)
             {
                 StatusResult.Text = "User Not Found. Try Another Term.";

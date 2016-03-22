@@ -21,29 +21,21 @@ namespace DirectorySearcherLib
         const string graphResourceUri = "https://graph.windows.net";
         public static string graphApiVersion = "1.5";
 
-        public static async Task<List<User>> SearchByAlias(string alias, IPlatformParameters parent) // add this param
+        public static async Task<List<User>> SearchByAlias(string alias) // TODO: add the IPlatformParameters parameter
         {
-            AuthenticationResult authResult = null;
             JObject jResult = null;
             List<User> results = new List<User>();
 
-            try
-            {
-                AuthenticationContext authContext = new AuthenticationContext(authority);
-                authResult = await authContext.AcquireTokenAsync(graphResourceUri, clientId, returnUri, parent);
-            }
-            catch (Exception ee)
-            {
-                results.Add(new User { error = ee.Message });
-                return results;
-            }
+            // TODO: Create an AuthenticationContext and get a token for the Graph API
 
             try
             {
                 string graphRequest = String.Format(CultureInfo.InvariantCulture, "{0}/{1}/users?api-version={2}&$filter=mailNickname eq '{3}'", graphResourceUri, authResult.TenantId, graphApiVersion, alias);
                 HttpClient client = new HttpClient();
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, graphRequest);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authResult.AccessToken);
+                
+                // TODO: Attach the access_token to the outgoing request
+
                 HttpResponseMessage response = await client.SendAsync(request);
 
                 string content = await response.Content.ReadAsStringAsync();
